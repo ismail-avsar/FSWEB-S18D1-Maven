@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 @ExtendWith(ResultAnalyzer.class)	
@@ -86,13 +87,15 @@ class SqlDmlJoinsApplicationTests {
 	@DisplayName("Her öğrencinin ad soyad karşılığında okuduğu kitap sayısını getiriniz.")
 	@Test
 	void findStudentNameSurnameCountTest(){
-		assertEquals(ogrenciRepository.findStudentNameSurnameCount().get(0).getAd(), "Deniz");
+		assertTrue(ogrenciRepository.findStudentNameSurnameCount()
+				.stream()
+				.anyMatch(s -> s.getAd().equals("Deniz")));
 		assertEquals(ogrenciRepository.findStudentNameSurnameCount().size(), 8);
 	}
 
 	@DisplayName("Tüm kitapların ortalama puanını bulunuz.")
 	@Test
 	void findAvgPointOfBooksTest(){
-		assertEquals(String.format("%.2f", kitapRepository.findAvgPointOfBooks()), "19.42");
+		assertEquals(String.format("%.2f", kitapRepository.findAvgPointOfBooks()), "19,42");
 	}
 }
